@@ -9,9 +9,18 @@ import scalaz.stream.Process
 
 object Blaze {
 
+  private[this] def urlWithParam(url: String, params: Map[String, String]) =
+    if(params.isEmpty) url
+    else {
+      val query = params.toList
+        .map{ case (key, value) => s"$key=$value" }
+        .mkString("&")
+      s"$url?$query"
+    }
+
   def apply(req: httpz.Request): ParseFailure \/ org.http4s.Request = for {
     m <- Method.fromString(req.method)
-    u <- Uri.fromString(req.url)
+    u <- Uri.fromString(urlWithParam(req.url, req.params))
   } yield org.http4s.Request(
     m,
     u,
