@@ -26,7 +26,10 @@ object Blaze {
     u,
     headers = Headers(req.headers.toList.map {
       case (k, v) => Header(k, v)
-    }),
+    } ++ (req.basicAuth match {
+      case Some((key, value)) => List(Header(key, value))
+      case None => Nil
+    })),
     body = (m, req.body) match {
       case (POST | PUT | PATCH, Some(bytes)) => Process.emit(ByteVector.view(bytes))
       case _ => EmptyBody
