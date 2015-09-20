@@ -22,7 +22,8 @@ final class BlazeInterpreter(create: () => BlazeClient) extends InterpretersTemp
 
   private def headersToMap(headers: Headers): Map[String, List[String]] =
     headers.toList
-      .map(h => h.name.toString -> List(h.value))
+      .groupBy(header => header.name.toString)
+      .map { case (name, hs) => name -> hs.map(_.value) }
       .toMap
 
   private implicit val byteVectorMonoid: Monoid[ByteVector] =
