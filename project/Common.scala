@@ -7,8 +7,6 @@ import com.typesafe.sbt.pgp.PgpKeys
 
 object Common {
 
-  val testSetting = TaskKey[Unit]("runTests") := (run in Test).toTask("").value
-
   private def gitHash: String = scala.util.Try(
     sys.process.Process("git rev-parse HEAD").lines_!.head
   ).getOrElse("master")
@@ -42,7 +40,6 @@ object Common {
       case Some((2, v)) if v >= 11 => unusedWarnings
     }.toList.flatten,
     fullResolvers ~= {_.filterNot(_.name == "jcenter")},
-    testSetting,
     releaseProcess := Seq[ReleaseStep](
       checkSnapshotDependencies,
       inquireVersions,

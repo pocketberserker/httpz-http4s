@@ -7,6 +7,8 @@ object build extends Build {
   private[this] val blazeName = "httpz-http4s-blaze"
   private[this] val allName = "httpz-http4s"
 
+  val testSetting = TaskKey[Unit]("runTests") := (run in Test).toTask("").value
+
   private[this] def module(id: String) =
     Project(id, file(id)).settings(commonSettings)
 
@@ -32,15 +34,17 @@ object build extends Build {
     libraryDependencies ++= Seq(
       Dependencies.httpz,
       Dependencies.blaze
-    )
+    ),
+    testSetting
   ).dependsOn(tests % "test")
 
   val root = Project("root", file(".")).settings(
     commonSettings
   ).settings(
     name := allName,
+    artifacts := Nil,
     packagedArtifacts := Map.empty
   ).aggregate(
-    blaze
+    blaze, tests
   )
 }
