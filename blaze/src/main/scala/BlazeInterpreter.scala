@@ -7,7 +7,7 @@ import httpz.{Response, ByteArray}
 import org.http4s.{Headers, EntityDecoder}
 import org.http4s.client.blaze.BlazeClient
 
-final class BlazeInterpreter(create: () => BlazeClient) extends InterpretersTemplate {
+final class BlazeInterpreter(factory: ClientFactory) extends InterpretersTemplate {
 
   val timeout = 30000
 
@@ -30,7 +30,7 @@ final class BlazeInterpreter(create: () => BlazeClient) extends InterpretersTemp
     Monoid.instance(_ ++ _, ByteVector.empty)
 
   protected override def request2response(req: httpz.Request) =
-    Blaze(req).map(using(create(), execute)).fold(
+    Blaze(req).map(using(factory.create(), execute)).fold(
       Function.const(Response(ByteArray.empty, 400, Map())),
       res => Response(new ByteArray(res.body.runFoldMap(identity).run.toArray), res.status.code, headersToMap(res.headers))
     )
