@@ -4,21 +4,21 @@ package http4sblaze
 import scalaz.Monoid
 import scodec.bits.ByteVector
 import httpz.{Response, ByteArray}
-import org.http4s.{Headers, EntityDecoder}
-import org.http4s.client.blaze.BlazeClient
+import org.http4s.Headers
+import org.http4s.client.Client
 
 final class BlazeInterpreter(factory: ClientFactory) extends InterpretersTemplate {
 
   val timeout = 30000
 
-  private def using[A](client: BlazeClient, f: (org.http4s.Request, BlazeClient) => A)(req: org.http4s.Request): A = try {
+  private def using[A](client: Client, f: (org.http4s.Request, Client) => A)(req: org.http4s.Request): A = try {
     f(req, client)
   } finally {
-    client.shutdown()
+    client.shutdown.run
   }
 
-  private def execute(req: org.http4s.Request, client: BlazeClient) =
-    client.prepare(req).runFor(timeout)
+  private def execute(req: org.http4s.Request, client: Client) =
+    client.toHttpService.run(req).runFor(timeout)
 
   private def headersToMap(headers: Headers): Map[String, List[String]] =
     headers.toList

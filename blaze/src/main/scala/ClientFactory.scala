@@ -1,10 +1,11 @@
 package httpz
 package http4sblaze
 
-import org.http4s.client.blaze.{BlazeClient, defaultClient}
+import org.http4s.client.Client
+import org.http4s.client.blaze.defaultClient
 
 trait ClientFactory {
-  def create(): BlazeClient
+  def create(): Client
 }
 
 object ClientFactory {
