@@ -23,7 +23,6 @@ final class BlazeInterpreter(factory: ClientFactory) extends InterpretersTemplat
     headers.toList
       .groupBy(header => header.name.toString)
       .map { case (name, hs) => name -> hs.map(_.value) }
-      .toMap
 
   private implicit val byteVectorMonoid: Monoid[ByteVector] =
     Monoid.instance(_ ++ _, ByteVector.empty)
