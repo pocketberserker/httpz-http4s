@@ -3,7 +3,6 @@ package http4sblaze
 
 import scalaz.Monoid
 import scodec.bits.ByteVector
-import httpz.{Response, ByteArray}
 import org.http4s.Headers
 import org.http4s.client.Client
 
