@@ -2,7 +2,7 @@ package httpz
 package http4sblaze
 
 import org.http4s.client.Client
-import org.http4s.client.blaze.defaultClient
+import org.http4s.client.blaze.SimpleHttp1Client
 
 trait ClientFactory {
   def create(): Client
@@ -11,6 +11,6 @@ trait ClientFactory {
 object ClientFactory {
 
   val default: ClientFactory = new ClientFactory {
-    override def create() = defaultClient
+    override def create() = SimpleHttp1Client()
   }
 }
