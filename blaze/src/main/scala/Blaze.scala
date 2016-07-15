@@ -6,14 +6,16 @@ import org.http4s._
 import org.http4s.Method._
 import scodec.bits.ByteVector
 import scalaz.stream.Process
+import java.net.URLEncoder.encode
 
 object Blaze {
 
   private[this] def urlWithParam(url: String, params: Map[String, String]) =
     if(params.isEmpty) url
     else {
+      val charset = "UTF-8"
       val query = params.toList
-        .map{ case (key, value) => s"$key=$value" }
+        .map{ case (key, value) => s"${encode(key, charset)}=${encode(value, charset)}" }
         .mkString("&")
       s"$url?$query"
     }
