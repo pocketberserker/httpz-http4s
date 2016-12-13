@@ -4,7 +4,7 @@ lazy val tests = Project("tests", file("tests")).settings(
   Common.commonSettings : _*
 ).settings(
   libraryDependencies ++= ("filter" :: "jetty" :: Nil).map(m =>
-    "net.databinder" %% s"unfiltered-$m" % "0.8.2"
+    "ws.unfiltered" %% s"unfiltered-$m" % "0.9.0-beta2"
   ) ++ Seq(Dependencies.httpz),
   publishArtifact := false,
   publish := {},

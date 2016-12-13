@@ -3,8 +3,8 @@ import sbt._, Keys._
 object Dependencies {
 
   object Version {
-    val http4s = "0.14.1a"
-    val httpz = "0.4.0"
+    val http4s = "0.15.0a"
+    val httpz = "0.5.0"
   }
 
   val httpz = "com.github.xuwei-k" %% "httpz" % Version.httpz
